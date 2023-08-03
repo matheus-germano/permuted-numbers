@@ -19,3 +19,37 @@
 The drawn number is 123, if user input a 142, the system will show: 1 right, 1 wrong and 1 permuted. The order of the response is not on numbers order, it's the default: Right, Wrong, Permuted;
 - If player one hit the number, the player two will have his last chance to hit. If player two hit that last chance, the game will continue with another number;
 - If player one miss the chance and player two make it, he will win the game;
+
+
+### Entities
+
+#### User
+- id: string
+- name: string
+- email: string 
+- password: string
+
+#### Guess
+- userId: string
+- guessNumber: string
+
+#### Round
+- id: string
+- guesses: Guess[]
+
+#### Game
+- id: string
+- difficulty: 'easy' | 'normal' | 'hard'
+- drawnNumber: string
+- players: User[]
+- rounds: Round[]
+- winner: Guess
+- startedAt: Date
+- endedAt: Date
+
+#### Room
+- id: string
+- name: string
+- password: string
+- game: Game
+- createdAt: Date

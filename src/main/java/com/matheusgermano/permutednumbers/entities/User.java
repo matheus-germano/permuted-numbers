@@ -49,4 +49,12 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getProfileAvatar() {
+        return this.profileAvatar;
+    }
+
+    public void setProfileAvatar(String profileAvatar) {
+        this.profileAvatar = profileAvatar;
+    }
 }

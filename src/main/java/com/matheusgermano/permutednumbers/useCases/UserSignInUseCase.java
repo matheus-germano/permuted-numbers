@@ -4,11 +4,11 @@ import com.matheusgermano.permutednumbers.entities.User;
 import com.matheusgermano.permutednumbers.protocols.ICryptoAdapter;
 import com.matheusgermano.permutednumbers.repositories.UsersRepository;
 
-public class UserSignIn {
+public class UserSignInUseCase {
     private UsersRepository usersRepository;
     private ICryptoAdapter cryptoAdapter;
 
-    public UserSignIn(UsersRepository usersRepository, ICryptoAdapter cryptoAdapter) {
+    public UserSignInUseCase(UsersRepository usersRepository, ICryptoAdapter cryptoAdapter) {
         this.usersRepository = usersRepository;
         this.cryptoAdapter = cryptoAdapter;
     }

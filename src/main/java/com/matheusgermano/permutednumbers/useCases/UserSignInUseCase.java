@@ -4,6 +4,8 @@ import com.matheusgermano.permutednumbers.entities.User;
 import com.matheusgermano.permutednumbers.protocols.ICryptoAdapter;
 import com.matheusgermano.permutednumbers.repositories.UsersRepository;
 
+import java.util.Optional;
+
 public class UserSignInUseCase {
     private UsersRepository usersRepository;
     private ICryptoAdapter cryptoAdapter;
@@ -14,16 +16,14 @@ public class UserSignInUseCase {
     }
 
     public String execute(String email, String password) {
-        User foundUser = usersRepository.findByEmail(email);
-
-        if (foundUser == null) {
-            throw new Error("User not found with this e-mail or password");
-        }
+        // com o Optional podemos fazer esse código aqui: evita fazer IF
+        User foundUser = usersRepository.findByEmail(email)
+                .orElseThrow(()-> new Error("User not found with this e-mail or password"));
 
         boolean passwordsMatches = cryptoAdapter.matches(password, foundUser.getPassword());
 
         if (!passwordsMatches) {
-            throw new Error("User not found with this e-mail or password");
+            throw new Error("Unauthorized");
         }
 
         return "";

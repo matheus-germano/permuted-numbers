@@ -3,6 +3,7 @@ package com.matheusgermano.permutednumbers.useCases;
 import com.matheusgermano.permutednumbers.adapters.AuthAdapter;
 import com.matheusgermano.permutednumbers.adapters.CryptoAdapter;
 import com.matheusgermano.permutednumbers.entities.User;
+import com.matheusgermano.permutednumbers.mocks.UserMocks;
 import com.matheusgermano.permutednumbers.protocols.IAuthAdapter;
 import com.matheusgermano.permutednumbers.protocols.ICryptoAdapter;
 import com.matheusgermano.permutednumbers.repositories.UsersRepository;
@@ -40,16 +41,10 @@ public class UserSignInUseCaseTest {
 
     @BeforeEach
     public void setup() throws NoSuchAlgorithmException {
-        String password = "123";
-        String encryptedPassword = cryptoAdapter.encrypt(password);
+        String encryptedPassword = cryptoAdapter.encrypt("123");
+        mockedUser = UserMocks.foundUser(encryptedPassword);
 
-        mockedUser = new User();
-        mockedUser.setId(UUID.randomUUID());
-        mockedUser.setName("Mocked Name");
-        mockedUser.setEmail("mocked@email.com");
-        mockedUser.setPassword(encryptedPassword);
-
-        when(iCryptoAdapter.encrypt(any())).thenReturn(encryptedPassword);
+        when(iCryptoAdapter.encrypt(any())).thenReturn(mockedUser.getPassword());
         when(iCryptoAdapter.matches(any(), any())).thenReturn(true);
         when(usersRepository.findByEmail(any())).thenReturn(Optional.of(mockedUser));
     }

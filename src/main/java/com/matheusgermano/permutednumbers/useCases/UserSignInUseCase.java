@@ -1,6 +1,7 @@
 package com.matheusgermano.permutednumbers.useCases;
 
 import com.matheusgermano.permutednumbers.entities.User;
+import com.matheusgermano.permutednumbers.protocols.IAuthAdapter;
 import com.matheusgermano.permutednumbers.protocols.ICryptoAdapter;
 import com.matheusgermano.permutednumbers.repositories.UsersRepository;
 
@@ -9,16 +10,17 @@ import java.util.Optional;
 public class UserSignInUseCase {
     private UsersRepository usersRepository;
     private ICryptoAdapter cryptoAdapter;
+    private IAuthAdapter authAdapter;
 
-    public UserSignInUseCase(UsersRepository usersRepository, ICryptoAdapter cryptoAdapter) {
+    public UserSignInUseCase(UsersRepository usersRepository, ICryptoAdapter cryptoAdapter, IAuthAdapter authAdapter) {
         this.usersRepository = usersRepository;
         this.cryptoAdapter = cryptoAdapter;
+        this.authAdapter = authAdapter;
     }
 
     public String execute(String email, String password) {
-        // com o Optional podemos fazer esse código aqui: evita fazer IF
         User foundUser = usersRepository.findByEmail(email)
-                .orElseThrow(()-> new Error("User not found with this e-mail or password"));
+            .orElseThrow(() -> new Error("User not found with this e-mail or password"));
 
         boolean passwordsMatches = cryptoAdapter.matches(password, foundUser.getPassword());
 
@@ -26,6 +28,8 @@ public class UserSignInUseCase {
             throw new Error("Unauthorized");
         }
 
-        return "";
+        String token = authAdapter.generateToken(foundUser.getName(), foundUser.getId());
+
+        return token;
     }
 }

@@ -9,14 +9,15 @@ import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 public class UserMocks {
-    public static UUID id = UUID.randomUUID();
 
-    public static User foundUser(String encryptedPassword) {
-        return User.builder()
-                .id(id)
-                .name("Mocked Name")
-                .email("mocked@email.com")
-                .password(encryptedPassword)
-                .build();
+    public static User foundUser(String encryptedPassword) throws NoSuchAlgorithmException {
+        User user = new User();
+
+        user.setId(UUID.randomUUID());
+        user.setName("Mocked Name");
+        user.setEmail("mocked@email.com");
+        user.setPassword(encryptedPassword);
+
+        return user;
     }
 }

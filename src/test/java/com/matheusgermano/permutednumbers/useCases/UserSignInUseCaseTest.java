@@ -26,49 +26,37 @@ public class UserSignInUseCaseTest {
     @Mock
     private ICryptoAdapter cryptoAdapter;
 
-
-    // antes de todos os testes dessa classe esse metodo vai ser executado
     @BeforeEach
     public void setup(){
-        /*por default voce deve retornar o caso de sucesso, então vc sempre deve retornar o usuário aqui, e fazer o caso
-        de erro que é retornar null somente no teste que voce quer
-         */
-
         when(usersRepository.findByEmail("nonexistent@example.com")).thenReturn(Optional.of(new User()));
     }
 
     @Test
     @DisplayName("Should throw an error if there is no user with provided e-mail")
     public void whenUserNotFoundWithProvidedEmail() {
-        // nesse caso como voce quer o erro, então faz sentido colocar o retorno como optional.empty
         when(usersRepository.findByEmail("nonexistent@example.com")).thenReturn(Optional.empty());
 
         Assertions.assertThatExceptionOfType(Error.class).isThrownBy(()->
-                userSignInUseCase.execute("nonexistent@example.com", "123")
+            userSignInUseCase.execute("nonexistent@example.com", "123")
         );
     }
 
     @Test
     @DisplayName("Should throw an error if there is no user with provided e-mail")
     public void whenUserNotFoundWithProvidedPassword() {
-        // não precisa mock pq por default ele vai retonar o usuário, no setup fazemos isso
-        //when(usersRepository.findByEmail("nonexistent@example.com")).thenReturn(null);
-
         Assertions.assertThatExceptionOfType(Error.class).isThrownBy(()->
-                userSignInUseCase.execute("nonexistent@example.com", "123")
+            userSignInUseCase.execute("nonexistent@example.com", "123")
         );
     }
 
     @Test
     @DisplayName("Should throw an error if cryptoAdapter is false")
     public void withCryptoAdapterFails() {
-        // aqui eu faço o mock somente da parte que quero retorna o valor falso
         when(cryptoAdapter.matches(anyString(), anyString())).thenReturn(false);
 
         Assertions.assertThatExceptionOfType(Error.class)
-                .isThrownBy(() ->
-                        userSignInUseCase.execute("nonexistent@example.com", "123")
-                );
-
+            .isThrownBy(() ->
+                userSignInUseCase.execute("nonexistent@example.com", "123")
+            );
     }
 }

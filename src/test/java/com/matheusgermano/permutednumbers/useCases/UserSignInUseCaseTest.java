@@ -1,5 +1,7 @@
 package com.matheusgermano.permutednumbers.useCases;
 
+import com.matheusgermano.permutednumbers.adapters.AuthAdapter;
+import com.matheusgermano.permutednumbers.adapters.CryptoAdapter;
 import com.matheusgermano.permutednumbers.entities.User;
 import com.matheusgermano.permutednumbers.protocols.IAuthAdapter;
 import com.matheusgermano.permutednumbers.protocols.ICryptoAdapter;
@@ -25,10 +27,12 @@ import static org.mockito.Mockito.when;
 public class UserSignInUseCaseTest {
     @InjectMocks
     private UserSignInUseCase userSignInUseCase;
+    @InjectMocks
+    private CryptoAdapter cryptoAdapter;
     @Mock
     private UsersRepository usersRepository;
     @Mock
-    private ICryptoAdapter cryptoAdapter;
+    private ICryptoAdapter iCryptoAdapter;
     @Mock
     private IAuthAdapter authAdapter;
 
@@ -45,14 +49,15 @@ public class UserSignInUseCaseTest {
         mockedUser.setEmail("mocked@email.com");
         mockedUser.setPassword(encryptedPassword);
 
-        when(cryptoAdapter.encrypt(any())).thenReturn(encryptedPassword);
-        when(cryptoAdapter.matches(any(), any())).thenReturn(true);
+        when(iCryptoAdapter.encrypt(any())).thenReturn(encryptedPassword);
+        when(iCryptoAdapter.matches(any(), any())).thenReturn(true);
         when(usersRepository.findByEmail(any())).thenReturn(Optional.of(mockedUser));
     }
 
     @Test
     @DisplayName("Should return a token when sign in is done successfully")
     public void whenSignInIsDoneSuccessfully() {
+        when(authAdapter.generateToken(mockedUser.getName(), mockedUser.getId())).thenReturn("non-null-token");
         String token = userSignInUseCase.execute(mockedUser.getEmail(), "123");
 
         Assertions.assertThat(token).isNotNull();
@@ -72,7 +77,7 @@ public class UserSignInUseCaseTest {
     @Test
     @DisplayName("Should throw an error if there is no user with provided password")
     public void whenUserNotFoundWithProvidedPassword() {
-        when(cryptoAdapter.matches(anyString(), anyString())).thenReturn(false);
+        when(iCryptoAdapter.matches(anyString(), anyString())).thenReturn(false);
 
         Assertions.assertThatExceptionOfType(Error.class).isThrownBy(() ->
             userSignInUseCase.execute(mockedUser.getEmail(), "password")

@@ -35,4 +35,13 @@ public class UserMocks {
                 .email("mocked@email.com")
                 .build();
     }
+
+    public static UserSignUpDTO validUserToSignUp() {
+        return UserSignUpDTO.builder()
+                .name("Mocked Name")
+                .profileAvatar("mockedProfile")
+                .password("mockedPassword")
+                .email("mocked@email.com")
+                .build();
+    }
 }

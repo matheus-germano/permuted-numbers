@@ -8,30 +8,24 @@ import java.security.NoSuchAlgorithmException;
 
 public class CryptoAdapter implements ICryptoAdapter {
     @Override
-    public String encrypt(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] encodedHash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+    public String encrypt(String password) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] encodedHash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
 
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : encodedHash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : encodedHash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
+                hexString.append('0');
             }
-
-            return hexString.toString();
-        } catch(NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            hexString.append(hex);
         }
 
-        throw new Error("Password is invalid");
+        return hexString.toString();
     }
 
     @Override
-    public boolean matches(String password, String hash) {
+    public boolean matches(String password, String hash) throws NoSuchAlgorithmException {
         String encryptedPassword = this.encrypt(password);
         boolean passwordsMatches = encryptedPassword.equals(hash);
 

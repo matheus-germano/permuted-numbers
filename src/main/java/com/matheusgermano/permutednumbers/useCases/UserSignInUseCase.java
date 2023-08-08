@@ -5,7 +5,7 @@ import com.matheusgermano.permutednumbers.protocols.IAuthAdapter;
 import com.matheusgermano.permutednumbers.protocols.ICryptoAdapter;
 import com.matheusgermano.permutednumbers.repositories.UsersRepository;
 
-import java.util.Optional;
+import java.security.NoSuchAlgorithmException;
 
 public class UserSignInUseCase {
     private UsersRepository usersRepository;
@@ -18,7 +18,7 @@ public class UserSignInUseCase {
         this.authAdapter = authAdapter;
     }
 
-    public String execute(String email, String password) {
+    public String execute(String email, String password) throws NoSuchAlgorithmException {
         User foundUser = usersRepository.findByEmail(email)
             .orElseThrow(() -> new Error("User not found with this e-mail or password"));
 

@@ -6,6 +6,7 @@ import com.matheusgermano.permutednumbers.mocks.UserMocks;
 import com.matheusgermano.permutednumbers.protocols.IAuthAdapter;
 import com.matheusgermano.permutednumbers.protocols.ICryptoAdapter;
 import com.matheusgermano.permutednumbers.repositories.UsersRepository;
+import lombok.SneakyThrows;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,6 +48,7 @@ public class UserSignInUseCaseTest {
     }
 
     @Test
+    @SneakyThrows
     @DisplayName("Should return a token when sign in is done successfully")
     public void whenSignInIsDoneSuccessfully() {
         when(authAdapter.generateToken(mockedUser.getName(), mockedUser.getId())).thenReturn("non-null-token");
@@ -67,6 +69,7 @@ public class UserSignInUseCaseTest {
     }
 
     @Test
+    @SneakyThrows
     @DisplayName("Should throw an error if there is no user with provided password")
     public void whenUserNotFoundWithProvidedPassword() {
         when(cryptoAdapter.matches(anyString(), anyString())).thenReturn(false);

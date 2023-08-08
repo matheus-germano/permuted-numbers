@@ -1,6 +1,7 @@
 package com.matheusgermano.permutednumbers.mocks;
 
 import com.matheusgermano.permutednumbers.adapters.CryptoAdapter;
+import com.matheusgermano.permutednumbers.dtos.UserSignInDTO;
 import com.matheusgermano.permutednumbers.dtos.UserSignUpDTO;
 import com.matheusgermano.permutednumbers.entities.User;
 import com.matheusgermano.permutednumbers.protocols.ICryptoAdapter;
@@ -42,6 +43,13 @@ public class UserMocks {
                 .profileAvatar("mockedProfile")
                 .password("mockedPassword")
                 .email("mocked@email.com")
+                .build();
+    }
+
+    public static UserSignInDTO validUserToSignIn() {
+        return UserSignInDTO.builder()
+                .email("mocked@email.com")
+                .password("mockedPassword")
                 .build();
     }
 }

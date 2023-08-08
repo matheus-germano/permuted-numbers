@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
 @RestController
 @RequestMapping("user")
 public class UserController {
-    private final UserSignInUseCase userSignInUseCase;
+    private UserSignInUseCase userSignInUseCase;
 
     public UserController(UserSignInUseCase userSignInUseCase) {
         this.userSignInUseCase = userSignInUseCase;

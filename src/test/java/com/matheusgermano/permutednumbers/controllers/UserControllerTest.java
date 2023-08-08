@@ -30,7 +30,7 @@ public class UserControllerTest {
 
     @BeforeEach
     public void setup() throws NoSuchAlgorithmException {
-        when(userSignInUseCase.execute(any(), any())).thenReturn(anyString());
+        when(userSignInUseCase.execute(any(), any())).thenReturn("returnedToken");
     }
 
     @Test
